@@ -7,20 +7,37 @@ import com.sda.carinspspection.model.Vehicle;
 
 public class InspectionProcess {
 	
-	QueueSystem queueSystem = new QueueSystem();
-	CarsRecord carDb = new CarsRecord();
-	int licenseNumber = 8892345;
-	Vehicle newVehicle= new Vehicle();
-	CreditCard creditcard= new CreditCard();
-	PaymentSystem paymentSystem=new PaymentSystem();
+	QueueSystem queueSystem;
+	CarsRecord carDb;
+	CreditCard creditcard;
+	PaymentSystem paymentSystem;
 	boolean inspectionStatus;
+	Vehicle newVehicle;
 	
-	public void startNewInspection(){
+	public InspectionProcess(){
+		queueSystem = new QueueSystem();
+		carDb = new CarsRecord();
+		creditcard= new CreditCard();
+		paymentSystem=new PaymentSystem();
+		inspectionStatus=false;
+		newVehicle = new Vehicle();
+	}
+	
+	public void setNewVehicle(Vehicle newVehicle){
+		this.newVehicle=newVehicle;
+	}
+	public Vehicle getNewVehicle(){
+		return newVehicle;
+	}
+	
+	public void startNewInspection(int licenseNumber){
 		newCustomerQueueDisplay();
-		returnVehicleInformation();
-		int InspectionsCost=calculateVehicleInspectionsCost();
-		payForInspections(InspectionsCost);
-		
+		returnVehicleInformation(licenseNumber);
+		int inspectionsCost=calculateVehicleInspectionsCost();
+		System.out.println(inspectionsCost);
+		payForInspections(inspectionsCost);
+		startInspections();
+		printResults();
 		
 	}
 
@@ -40,22 +57,30 @@ public class InspectionProcess {
 		
 	}
 
-	public void returnVehicleInformation() {
-		newVehicle=checkVehicle(licenseNumber);
+	public Vehicle returnVehicleInformation(int licenseNumber) {
+			Vehicle vehicle=checkVehicle(licenseNumber);
+		return vehicle;
 	}
 	
 	//Checks vehicle if exists if none adds it.
 	public Vehicle checkVehicle(int licenseNumber) {
 		if(carDb.searchVehicle(licenseNumber) !=null)
+		{
+			System.out.println("Vehicle exists");
 			return carDb.searchVehicle(licenseNumber);
+		}
+		else
+		{
 		 carDb.addVehicle(licenseNumber,newVehicle);
+		 System.out.println("added");
 		 return carDb.searchVehicle(licenseNumber);
+		}
 	}
 	
 	public void startInspections(){
 		for (int i=0;i<newVehicle.getRequiredInspections().size();i++)
 		{
-			newVehicle.getRequiredInspections().get(i).getName();
+			System.out.println(newVehicle.getRequiredInspections().get(i).getName());
 			newVehicle.getRequiredInspections().get(i).setStatus(inspectionStatus);
 		}
 	}
@@ -64,7 +89,7 @@ public class InspectionProcess {
 			
 			for (int i=0;i<newVehicle.getRequiredInspections().size();i++)
 			{
-				System.out.println("The inspection is"+newVehicle.getRequiredInspections().get(i).getName());
+				System.out.println("The inspection is "+newVehicle.getRequiredInspections().get(i).getName());
 				System.out.println(newVehicle.getRequiredInspections().get(i).getStatus());
 			}
 	}

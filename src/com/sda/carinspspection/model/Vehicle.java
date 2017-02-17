@@ -9,12 +9,11 @@ public class Vehicle {
 	private ArrayList<Inspection> requiredInspections;
 
 	public Vehicle(){
-		
+		requiredInspections= new ArrayList<>();
 	}
 	public Vehicle(int licenseNumber){
 		this.licenseNumber=licenseNumber;
-		requiredInspections= new ArrayList<>();
-		
+		requiredInspections= new ArrayList<>();	
 	}
 	
 	public String getOwnerName() {
@@ -34,6 +33,10 @@ public class Vehicle {
 	}
 	public ArrayList<Inspection> getRequiredInspections(){
 		return this.requiredInspections;
+	}
+	
+	public void setRequiredInspections(Inspection inspection){
+		requiredInspections.add(inspection);
 	}
 	
 	public void addInspection(String name,int cost,boolean status){
